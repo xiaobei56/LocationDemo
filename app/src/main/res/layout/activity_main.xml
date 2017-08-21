@@ -10,7 +10,7 @@
         android:lines="16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:enabled="false"/>
+        android:scrollbars="vertical"/>
     <Button
         android:id="@+id/btn_timer_get"
         android:layout_width="match_parent"
@@ -21,4 +21,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="获取当前位置"/>
+    <Button
+        android:id="@+id/btn_stop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="stop"/>
 </LinearLayout>

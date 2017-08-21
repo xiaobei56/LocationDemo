@@ -14,18 +14,21 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 
 import gridlife.cn.locationdemo.R;
+import gridlife.cn.locationdemo.util.LogUtils;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText etShow;
     private Button btnTimeGet;
-    private Button btnGetNow;
+    private Button btnGetNow,btnStop;
     public LocationClient mLocationClient = null;
+    int count=0;
     Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            etShow.setText(msg.getData().get("ADDRSTR").toString());
+            etShow.setText(etShow.getText().toString()+'\n'+(msg.getData().get("ADDRSTR")==null?"null":msg.getData().get("ADDRSTR").toString())+count++);
+
         }
     };
     public BDAbstractLocationListener myListener = new MyLocationListener();
@@ -36,9 +39,11 @@ public class MainActivity extends AppCompatActivity {
         etShow = (EditText) findViewById(R.id.et_show);
         btnTimeGet = (Button) findViewById(R.id.btn_timer_get);
         btnGetNow = (Button) findViewById(R.id.btn_get_now);
+        btnStop = (Button) findViewById(R.id.btn_stop);
         mLocationClient = new LocationClient(getApplicationContext());
         //声明LocationClient类
         mLocationClient.registerLocationListener( myListener );
+
         //注册监听函数
         initLocation();
 
@@ -48,7 +53,12 @@ public class MainActivity extends AppCompatActivity {
                 mLocationClient.start();
             }
         });
-
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mLocationClient.stop();
+            }
+        });
 
     }
     private void initLocation(){
@@ -120,9 +130,10 @@ public class MainActivity extends AppCompatActivity {
             location.getBuildingID();    //室内精准定位下，获取楼宇ID
             location.getBuildingName();    //室内精准定位下，获取楼宇名称
             location.getFloor();    //室内精准定位下，获取当前位置所处的楼层信息
-
+            LogUtils.e("位置信息",location.getAddress());
             bundle.putString("ADDRSTR",location.getAddrStr());
             message.setData(bundle);
+            handler.sendMessage(message);
             if (location.getLocType() == BDLocation.TypeGpsLocation){
 
                 //当前为GPS定位结果，可获取以下信息
