@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
             location.getBuildingID();    //室内精准定位下，获取楼宇ID
             location.getBuildingName();    //室内精准定位下，获取楼宇名称
             location.getFloor();    //室内精准定位下，获取当前位置所处的楼层信息
-            LogUtils.e("位置信息",location.getAddress());
+            LogUtils.e("位置信息",location.getLocationID()+"");
             bundle.putString("ADDRSTR",location.getAddrStr());
             message.setData(bundle);
             handler.sendMessage(message);
